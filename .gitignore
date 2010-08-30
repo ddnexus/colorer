@@ -19,3 +19,9 @@ rdoc
 pkg
 
 ## PROJECT::SPECIFIC
+
+## Eclipse
+.loadpath
+.project
+
+*.gemspec

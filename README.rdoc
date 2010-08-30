@@ -1,16 +1,58 @@
 = colorer
 
-Description goes here.
+Easy ANSI code coloring for strings.
 
-== Note on Patches/Pull Requests
- 
-* Fork the project.
-* Make your feature addition or bug fix.
-* Add tests for it. This is important so I don't break it in a
-  future version unintentionally.
-* Commit, do not mess with rakefile, version, or history.
-  (if you want to have your own version, that is fine but bump version in a commit by itself I can ignore when I pull)
-* Send me a pull request. Bonus points for topic branches.
+== Synopsis
+
+    require 'colorer'
+
+    "a red bold underlined text on white background".red.bold.underline.onwhite
+
+    Colorer.define_styles :errorize => [ :red, :bold, :underline ]
+    "an error string".errorize
+
+=== Basic Styles
+
+* clear
+* bold
+* underline
+* reversed
+
+* black
+* red
+* green
+* yellow
+* blue
+* magenta
+* cyan
+* white
+
+* onblack
+* onred
+* ongreen
+* onyellow
+* onblue
+* onmagenta
+* oncyan
+* onwhite
+
+=== Custom Styles
+
+You can define your own custom styles:
+
+    Colorer.define_styles :errorize => [ :red, :bold, :underline ],
+                          :okize => [ :green, :bold ]
+                          :crazyize => [ :magenta, :onyellow, :bold, :underline ]
+
+    error_string.errorize
+    # same as
+    error_string.red.bold.underline
+    ok_string.okeyze
+    # same as
+    ok_string.green.bold
+    crazy_string.crazyize
+    # same as
+    crazy_string.magenta.onyellow.bold.underline
 
 == Copyright
 

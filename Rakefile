@@ -5,12 +5,12 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "colorer"
-    gem.summary = %Q{TODO: one-line summary of your gem}
-    gem.description = %Q{TODO: longer description of your gem}
+    gem.summary = %Q{Easy ANSI code coloring for strings}
+    gem.description = %Q{Colorer adds the basic ANSI styles to any string, allowing also to define your own stiles}
     gem.email = "dd.nexus@gmail.com"
     gem.homepage = "http://github.com/ddnexus/colorer"
     gem.authors = ["Domizio Demichelis"]
-    gem.add_development_dependency "thoughtbot-shoulda", ">= 0"
+    gem.add_development_dependency "irt", ">= 0.7.0"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
   Jeweler::GemcutterTasks.new
