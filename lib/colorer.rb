@@ -45,6 +45,8 @@ module Colorer
       String.class_eval do
         if styles.delete(:basic)
           Colorer::BASIC_SGR.each_pair do |meth, sgr|
+            raise Exception, "already defined method '#{meth}' for #{self}:#{self.class}" \
+              if !force && instance_methods.include?(meth.to_s)
             define_method(meth) do
               Colorer.add_sgr(self, sgr)
             end
