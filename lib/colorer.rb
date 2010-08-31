@@ -2,10 +2,12 @@ module Colorer
 
   class Exception < ::Exception; end
 
-  CODES = {
+  # Select Graphic Rendition
+  BASIC_SGR = {
     :clear     => 0,
     :bold      => 1,
     :underline => 4,
+    :blinking  => 5,
     :reversed  => 7,
 
     :black     => 30,
@@ -31,38 +33,31 @@ module Colorer
   class << self
     attr_accessor :color
 
-    def insert_code(string, code)
-      if @color && STDOUT.tty? && ENV['TERM'] && ENV['TERM'] != 'dumb'
-        string = to_ansi(string) unless string =~ /^\e\[[\d;]+m.*\e\[0m$/
-        string.sub /^(\e\[[\d;]+)/, '\1;' + code.to_s
-      else
-        string
-      end
+    def add_sgr(string, sgr)
+      return string unless (Colorer.color && STDOUT.tty? && ENV['TERM'] && ENV['TERM'] != 'dumb')
+      string = sprintf("\e[0m%s\e[0m", string) unless string =~ /^\e\[[\d;]+m.*\e\[0m$/
+      sgr = Colorer::BASIC_SGR[sgr] if sgr.is_a?(Symbol)
+      raise Exception, "undefined SGR code '#{sgr}'" if sgr.nil?
+      string.sub /^(\e\[[\d;]+)/, '\1;' + sgr.to_s
     end
 
     def define_styles(styles, force=false)
       String.class_eval do
-        styles.each_pair do |meth, style|
-          raise Exception, "already defined method '#{meth}' for #{self}:#{self.class}" \
-            if !force && String.instance_methods.include?(meth.to_s)
-          define_method(meth) do
-            style.inject(self) { |str, m| str.send m }
+        if styles.delete(:basic)
+          Colorer::BASIC_SGR.each_pair do |meth, sgr|
+            define_method(meth) do
+              Colorer.add_sgr(self, sgr)
+            end
+          end
+        else
+          styles.each_pair do |meth, style|
+            raise Exception, "already defined method '#{meth}' for #{self}:#{self.class}" \
+              if !force && instance_methods.include?(meth.to_s)
+            define_method(meth) do
+              style.inject(self) { |str, sgr|  Colorer.add_sgr(str, sgr) }
+            end
           end
         end
-      end
-    end
-
-    private
-
-    def to_ansi(string)
-      sprintf "\e[0m%s\e[0m", string
-    end
-  end
-
-  String.class_eval do
-    Colorer::CODES.each_pair do |meth, code|
-      define_method(meth) do
-        Colorer.insert_code(self, code)
       end
     end
   end

@@ -10,7 +10,7 @@ begin
     gem.email = "dd.nexus@gmail.com"
     gem.homepage = "http://github.com/ddnexus/colorer"
     gem.authors = ["Domizio Demichelis"]
-    gem.add_development_dependency "irt", ">= 0.7.0"
+    gem.add_development_dependency "irt", ">= 0.7.1"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
   Jeweler::GemcutterTasks.new

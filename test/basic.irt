@@ -1,5 +1,7 @@
 require 'colorer'
 
+Colorer.define_styles :basic => true
+
 desc "red"
 'red'.red
 puts _
@@ -20,28 +22,5 @@ desc "red bold underline reversed"
 puts _
 test_value_eql? "\e[0;31;1;4;7mred bold underline reversed\e[0m"
 
-Colorer.define_styles :errorize => [ :red, :bold, :underline ],
-:okeyze => [ :green, :bold ]
-
-desc "errorize"
-'errorize'.errorize
-puts _
-test_value_eql? "\e[0;31;1;4merrorize\e[0m"
-
-desc "okeyze"
-'okeyize'.okeyze
-puts _
-test_value_eql? "\e[0;32;1mokeyize\e[0m"
-
-desc "crazy"
-'crazy'.magenta.onyellow.bold
-puts _
-test_value_eql? "\e[0;35;43;1mcrazy\e[0m"
-
-
-desc "less crazy"
-'less crazy'.magenta.onyellow
-puts _
-test_value_eql? "\e[0;35;43mless crazy\e[0m"
 
 

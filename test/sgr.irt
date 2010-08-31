@@ -1,0 +1,9 @@
+require 'colorer'
+
+Colorer.define_styles :mixed_sgr => [ :bold, 8 ]
+
+
+desc "Mixed SGR parameters"
+"Mixed SGR parameters".mixed_sgr
+puts _
+test_value_eql? "\e[0;1;8mMixed SGR parameters\e[0m"

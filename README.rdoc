@@ -5,17 +5,32 @@ Easy ANSI code coloring for strings.
 == Synopsis
 
     require 'colorer'
+    Colorer.define_styles :basic => true,
+                          :errorize => [ :red, :bold, :underline ],
+                          :mysgr => [ :red, 8 ]
 
     "a red bold underlined text on white background".red.bold.underline.onwhite
-
-    Colorer.define_styles :errorize => [ :red, :bold, :underline ]
     "an error string".errorize
+    "my native (Select Graphic Rendition) string".mysgr
+
+== Features
+
+* Does not pollute String of unwanted methods
+* Allows you to define basic styles with one line of code
+* Allows you to easily add your own custom styles
+* Allows extended (Select Graphic Rendition) parameters
 
 === Basic Styles
+
+You can define the basic styles for any string:
+
+    Colorer.define_styles :basic => true
+    'red bold string'.red.bold
 
 * clear
 * bold
 * underline
+* blinking
 * reversed
 
 * black
@@ -41,7 +56,7 @@ Easy ANSI code coloring for strings.
 You can define your own custom styles:
 
     Colorer.define_styles :errorize => [ :red, :bold, :underline ],
-                          :okize => [ :green, :bold ]
+                          :okize => [ :green, :bold ],
                           :crazyize => [ :magenta, :onyellow, :bold, :underline ]
 
     error_string.errorize
@@ -53,6 +68,14 @@ You can define your own custom styles:
     crazy_string.crazyize
     # same as
     crazy_string.magenta.onyellow.bold.underline
+
+=== SGR Styles
+
+You can also add native SGR (Select Graphic Rendition) parameters (0..109) to any style:
+
+    Colorer.define_styles :mysgr => [ :red, 8 ]
+
+See http://en.wikipedia.org/wiki/ANSI_colors for a complete list
 
 == Copyright
 

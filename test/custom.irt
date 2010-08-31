@@ -1,0 +1,14 @@
+require 'colorer'
+
+Colorer.define_styles :errorize => [ :red, :bold, :underline ],
+:okeyze => [ :green, :bold ]
+
+desc "errorize"
+'errorize'.errorize
+puts _
+test_value_eql? "\e[0;31;1;4merrorize\e[0m"
+
+desc "okeyze"
+'okeyize'.okeyze
+puts _
+test_value_eql? "\e[0;32;1mokeyize\e[0m"
