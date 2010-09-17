@@ -1,5 +1,7 @@
 module Colorer
 
+  VERSION = File.read(File.expand_path('../../VERSION', __FILE__)).strip
+
   class Exception < ::Exception; end
 
   # Select Graphic Rendition
