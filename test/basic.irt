@@ -1,6 +1,6 @@
 require 'colorer'
 
-Colorer.define_styles :basic => true
+Colorer.define_styles({:basic => true}, true)
 
 desc "red"
 'red'.red
@@ -21,6 +21,3 @@ desc "red bold underline reversed"
 'red bold underline reversed'.red.bold.underline.reversed
 puts _
 test_value_eql? "\e[0;31;1;4;7mred bold underline reversed\e[0m"
-
-
-
