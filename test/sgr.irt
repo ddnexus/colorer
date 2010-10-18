@@ -1,9 +1,17 @@
 require 'colorer'
 
-Colorer.define_styles :mixed_sgr => [ :bold, 8 ]
+Colorer.define_styles :mixed_sgr => [ :bold, 7 ]
 
 
 desc "Mixed SGR parameters"
 "Mixed SGR parameters".mixed_sgr
 puts _
-test_value_eql? "\e[0;1;8mMixed SGR parameters\e[0m"
+test_value_eql? "\e[0;1;7mMixed SGR parameters\e[0m"
+
+desc "Basic and custom definition"
+Colorer.define_styles({:basic => true, :goo => [7]}, 1)
+"Basic and custom definition".green.goo
+puts _
+test_value_eql? "\e[0;32;7mBasic and custom definition\e[0m"
+
+
