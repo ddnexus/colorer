@@ -55,20 +55,13 @@ module Colorer
   end
 
   def define_styles(styles, force=false)
+    styles = Colorer::BASIC_SGR.merge(styles) if styles.delete(:basic)
     styles.each_pair do |meth, style|
+      style = [style] unless style.is_a?(Array)
       String.class_eval do
-        if meth == :basic && style
-          Colorer::BASIC_SGR.each_pair do |m, sgr|
-            raise AlreadyDefinedMethod.new(m, self) if !force && method_defined?(m)
-            define_method(m) do
-              Colorer.add_sgr(self, sgr)
-            end
-          end
-        else
-          raise AlreadyDefinedMethod.new(meth, self) if !force && method_defined?(meth)
-          define_method(meth) do
-            style.inject(self) { |str, sgr| Colorer.add_sgr(str, sgr) }
-          end
+        raise AlreadyDefinedMethod.new(meth, self) if !force && method_defined?(meth)
+        define_method(meth) do
+          style.inject(self) { |str, sgr| Colorer.add_sgr(str, sgr) }
         end
       end
     end
