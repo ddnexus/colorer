@@ -46,22 +46,21 @@ module Colorer
   @color = true
   attr_accessor :color
 
-  def add_sgr(string, sgr)
-    return string unless (Colorer.color && STDOUT.tty? && ENV['TERM'] && ENV['TERM'] != 'dumb')
-    code = sgr.is_a?(Symbol) ? Colorer::BASIC_SGR[sgr] : sgr
-    raise UnknownSgrCode.new(sgr) unless code.is_a? Integer
-    string = sprintf("\e[0m%s\e[0m", string) unless string =~ /^\e\[[\d;]+m.*\e\[0m$/
-    string.sub /^(\e\[[\d;]+)/, '\1;' + code.to_s
-  end
-
   def define_styles(styles, force=false)
-    styles = Colorer::BASIC_SGR.merge(styles) if styles.delete(:basic)
+    styles = BASIC_SGR.merge(styles) if styles.delete(:basic)
     styles.each_pair do |meth, style|
       style = [style] unless style.is_a?(Array)
+      codes = style.map do |s|
+        code = s.is_a?(Symbol) ? BASIC_SGR[s] : s
+        raise UnknownSgrCode.new(s) unless code.is_a?(Integer) && (0..109).include?(code)
+        code
+      end
       String.class_eval do
         raise AlreadyDefinedMethod.new(meth, self) if !force && method_defined?(meth)
         define_method(meth) do
-          style.inject(self) { |str, sgr| Colorer.add_sgr(str, sgr) }
+          return self unless (Colorer.color && STDOUT.tty? && ENV['TERM'] && ENV['TERM'] != 'dumb')
+          string = self =~ /^\e\[[\d;]+m.*\e\[0m$/ ? self : sprintf("\e[0m%s\e[0m", self)
+          string.sub /^(\e\[[\d;]+)/, '\1;' + codes.join(';')
         end
       end
     end
