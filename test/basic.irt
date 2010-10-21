@@ -1,6 +1,6 @@
 require 'colorer'
 
-Colorer.define_styles({:basic => true}, true)
+Colorer.def_basic_styles true, true
 
 desc "red"
 'red'.red

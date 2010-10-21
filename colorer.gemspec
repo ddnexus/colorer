@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.summary = 'Easy ANSI code coloring for strings'
   s.description = 'Colorer adds the basic ANSI styles to any string, allowing also to define your own stiles'
 
-  s.add_development_dependency('irt', [">= 0.7.1"])
+  s.add_development_dependency('irt', [">= 0.7.7"])
 
   s.files = `git ls-files -z`.split("\0")
 

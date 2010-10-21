@@ -46,18 +46,22 @@ module Colorer
   @color = true
   attr_accessor :color
 
+  def def_basic_styles(basic=true, force=false)
+    define_styles basic_styles(basic), force
+  end
+
+  def def_custom_styles(styles, force=false)
+    define_styles styles, force
+  end
+
   def define_styles(styles, force=false)
-    if basic = styles.delete(:basic)
-      basic_styles = {}
-      case basic
-      when TrueClass
-        basic_styles = BASIC_SGR
-      when Array
-        basic.each{|k| basic_styles[k] = BASIC_SGR[k]}
-      when Symbol
-        basic_styles[basic] = BASIC_SGR[basic]
+    unless caller[0].match(/def_basic_styles|def_custom_styles/)
+      puts 'DEPRECATION WARNING: :define_styles has been deprecated. Use def_basic_styles and def_custom_styles instead'
+      if styles.keys.include?(:basic)
+        puts 'DEPRECATION WARNING: :basic is not a reserved name anymore: please use def_basic_styles to define the basic methods'
+        styles = basic_styles(styles.delete(:basic)).merge(styles)
       end
-      styles = basic_styles.merge(styles)
+      puts "    #{caller[0]}"
     end
     styles.each_pair do |meth, style|
       style = [style] unless style.is_a?(Array)
@@ -76,6 +80,21 @@ module Colorer
         end
       end
     end
+  end
+
+  private
+
+  def basic_styles(basic)
+    styles = {}
+    case basic
+    when TrueClass
+      styles = BASIC_SGR
+    when Array
+      basic.each{|k| styles[k] = BASIC_SGR[k]}
+    when Symbol
+      styles[basic] = BASIC_SGR[basic]
+    end
+    styles
   end
 
 end

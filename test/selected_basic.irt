@@ -1,6 +1,6 @@
 require 'colorer'
 
-Colorer.define_styles({:basic => [:bold, :red]}, true)
+Colorer.def_basic_styles([:bold, :red], true)
 
 desc "red"
 'red'.red
@@ -13,7 +13,7 @@ puts _
 test_value_eql? "\e[0;31;1mred bold\e[0m"
 
 desc "onwhite"
-Colorer.define_styles({:basic => :onwhite}, true)
+Colorer.def_basic_styles([:onwhite], true)
 'onwhite'.onwhite
 puts _
 test_value_eql? "\e[0;47monwhite\e[0m"

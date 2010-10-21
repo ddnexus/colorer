@@ -1,6 +1,6 @@
 require 'colorer'
 
-Colorer.define_styles :errorize => [ :red, :bold, :underline ],
+Colorer.def_custom_styles :errorize => [ :red, :bold, :underline ],
 :okeyze => [ :green, :bold ]
 
 desc "errorize"

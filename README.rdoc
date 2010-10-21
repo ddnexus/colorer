@@ -5,9 +5,9 @@ Easy ANSI code coloring for strings.
 == Synopsis
 
     require 'colorer'
-    Colorer.define_styles :basic => true,
-                          :errorize => [ :red, :bold, :underline ],
-                          :mysgr => [ :red, 8 ]
+    Colorer.def_basic_styles
+    Colorer.def_custom_styles :errorize => [ :red, :bold, :underline ],
+                              :mysgr => [ :red, 8 ]
 
     "a red bold underlined text on white background".red.bold.underline.onwhite
     "an error string".errorize
@@ -22,19 +22,21 @@ Easy ANSI code coloring for strings.
 
 === Basic Styles
 
-You can define the basic styles for any string by using the reserved name :basic:
+You can define the basic styles for any string by using the def_basic_styles method:
 
     # all basic styles
-    Colorer.define_styles :basic => true
+    Colorer.def_basic_styles
     "a string".green.bold.reversed.underline...
 
     # a few basic styles
-    Colorer.define_styles :basic => [:bold, :reversed]
+    Colorer.define_styles [:bold, :reversed]
     "a string".bold.reversed
 
     # one basic style
-    Colorer.define_styles :basic => :red
+    Colorer.define_styles :red
     "a string".red
+
+==== Basic Styles List
 
 * clear
 * bold
@@ -62,11 +64,11 @@ You can define the basic styles for any string by using the reserved name :basic
 
 === Custom Styles
 
-You can define your own custom styles:
+You can define your own custom styles by aggregating any basic styles names:
 
-    Colorer.define_styles :errorize => [ :red, :bold, :underline ],
-                          :okize => [ :green, :bold ],
-                          :crazyize => [ :magenta, :onyellow, :bold, :underline ]
+    Colorer.def_custom_styles :errorize => [ :red, :bold, :underline ],
+                              :okize => [ :green, :bold ],
+                              :crazyize => [ :magenta, :onyellow, :bold, :underline ]
 
     error_string.errorize
     # same as
@@ -78,13 +80,11 @@ You can define your own custom styles:
     # same as
     crazy_string.magenta.onyellow.bold.underline
 
-Notice: you cannot use :basic as a custom name, since it is the reserved name used to define the basic styles.
-
 === SGR Styles
 
 You can also add native SGR (Select Graphic Rendition) parameters (0..109) to any style:
 
-    Colorer.define_styles :mysgr => [ :red, 8 ]
+    Colorer.def_custom_styles :mysgr => [ :red, 8 ]
 
 See http://en.wikipedia.org/wiki/ANSI_colors for a complete list
 
