@@ -47,20 +47,32 @@ module Colorer
   attr_accessor :color
 
   def define_styles(styles, force=false)
-    styles = BASIC_SGR.merge(styles) if styles.delete(:basic)
+    if basic = styles.delete(:basic)
+      basic_styles = {}
+      case basic
+      when TrueClass
+        basic_styles = BASIC_SGR
+      when Array
+        basic.each{|k| basic_styles[k] = BASIC_SGR[k]}
+      when Symbol
+        basic_styles[basic] = BASIC_SGR[basic]
+      end
+      styles = basic_styles.merge(styles)
+    end
     styles.each_pair do |meth, style|
       style = [style] unless style.is_a?(Array)
       codes = style.map do |s|
-        code = s.is_a?(Symbol) ? BASIC_SGR[s] : s
-        raise UnknownSgrCode.new(s) unless code.is_a?(Integer) && (0..109).include?(code)
-        code
-      end
+                code = s.is_a?(Symbol) ? BASIC_SGR[s] : s
+                raise UnknownSgrCode.new(s) unless code.is_a?(Integer) && (0..109).include?(code)
+                code
+              end.join(';')
       String.class_eval do
         raise AlreadyDefinedMethod.new(meth, self) if !force && method_defined?(meth)
         define_method(meth) do
           return self unless (Colorer.color && STDOUT.tty? && ENV['TERM'] && ENV['TERM'] != 'dumb')
-          string = self =~ /^\e\[[\d;]+m.*\e\[0m$/ ? self : sprintf("\e[0m%s\e[0m", self)
-          string.sub /^(\e\[[\d;]+)/, '\1;' + codes.join(';')
+          match(/^\e\[[\d;]+m.*\e\[0m$/) ?
+            sub(/^(\e\[[\d;]+)/, '\1;' + codes) :
+            sprintf("\e[0;%sm%s\e[0m", codes, self)
         end
       end
     end

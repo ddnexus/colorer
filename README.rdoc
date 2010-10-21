@@ -22,10 +22,19 @@ Easy ANSI code coloring for strings.
 
 === Basic Styles
 
-You can define the basic styles for any string:
+You can define the basic styles for any string by using the reserved name :basic:
 
+    # all basic styles
     Colorer.define_styles :basic => true
-    'red bold string'.red.bold
+    "a string".green.bold.reversed.underline...
+
+    # a few basic styles
+    Colorer.define_styles :basic => [:bold, :reversed]
+    "a string".bold.reversed
+
+    # one basic style
+    Colorer.define_styles :basic => :red
+    "a string".red
 
 * clear
 * bold
@@ -68,6 +77,8 @@ You can define your own custom styles:
     crazy_string.crazyize
     # same as
     crazy_string.magenta.onyellow.bold.underline
+
+Notice: you cannot use :basic as a custom name, since it is the reserved name used to define the basic styles.
 
 === SGR Styles
 

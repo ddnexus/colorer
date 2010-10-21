@@ -1,0 +1,25 @@
+require 'colorer'
+
+Colorer.define_styles({:basic => [:bold, :red]}, true)
+
+desc "red"
+'red'.red
+puts _
+test_value_eql? "\e[0;31mred\e[0m"
+
+desc "red bold"
+'red bold'.red.bold
+puts _
+test_value_eql? "\e[0;31;1mred bold\e[0m"
+
+desc "onwhite"
+Colorer.define_styles({:basic => :onwhite}, true)
+'onwhite'.onwhite
+puts _
+test_value_eql? "\e[0;47monwhite\e[0m"
+
+
+desc "not underline"
+'not underline'.respond_to? :underline
+test_value_eql? false
+
