@@ -43,7 +43,7 @@ module Colorer
 
   extend self
 
-  @color = true
+  @color = RbConfig::CONFIG['host_os'] !~ /mswin|mingw/
   attr_accessor :color
 
   def def_basic_styles(basic=true, force=false)
