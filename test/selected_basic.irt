@@ -1,5 +1,3 @@
-require 'colorer'
-
 Colorer.def_basic_styles([:bold, :red], true)
 
 desc "red"
