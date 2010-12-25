@@ -65,7 +65,10 @@ module Colorer
     end
     styles.each_pair do |meth, style|
       # allows dummy methods (useful for style overriding)
-      return String.class_eval { define_method(meth) { self } } if style.nil?
+      if style.nil?
+        String.class_eval { define_method(meth) { self } }
+        next
+      end
       style = [style] unless style.is_a?(Array)
       codes = style.map do |s|
                 code = s.is_a?(Symbol) ? BASIC_SGR[s] : s

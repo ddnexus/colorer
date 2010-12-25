@@ -1,5 +1,6 @@
-Colorer.def_custom_styles :errorize => [ :red, :bold, :underline ],
-:okeyze => [ :green, :bold ]
+Colorer.def_custom_styles :dummy => nil,
+                          :errorize => [ :red, :bold, :underline ],
+                          :okeyze => [ :green, :bold ]
 
 desc "errorize"
 'errorize'.errorize
@@ -12,7 +13,6 @@ puts _
 test_value_eql? "\e[0;32;1mokeyize\e[0m"
 
 desc "allows dummy styles"
-Colorer.def_custom_styles :dummy => nil
 'dummy'.dummy
 puts _
 test_value_eql?( "dummy" )
