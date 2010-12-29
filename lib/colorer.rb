@@ -46,6 +46,9 @@ module Colorer
   @color = RbConfig::CONFIG['host_os'] !~ /mswin|mingw/
   attr_accessor :color
 
+  @strict_ansi = !!ENV['COLORER_STRICT_ANSI']
+  attr_accessor :strict_ansi
+
   def def_basic_styles(basic=true, force=false)
     define_styles basic_styles(basic), force
   end
@@ -74,14 +77,20 @@ module Colorer
                 code = s.is_a?(Symbol) ? BASIC_SGR[s] : s
                 raise UnknownSgrCode.new(s) unless code.is_a?(Integer) && (0..109).include?(code)
                 code
-              end.join(';')
+              end
       String.class_eval do
         raise AlreadyDefinedMethod.new(meth, self) if !force && method_defined?(meth)
         define_method(meth) do
           return self unless (Colorer.color && STDOUT.tty? && ENV['TERM'] && ENV['TERM'] != 'dumb')
-          match(/^\e\[[\d;]+m.*\e\[0m$/) ?
-            sub(/^(\e\[[\d;]+)/, '\1;' + codes) :
-            sprintf("\e[0;%sm%s\e[0m", codes, self)
+          if Colorer.strict_ansi
+            match(/^\e\[[\d;]+m.*\e\[0m$/) ?
+              sub(/^(\e\[[\d;]+)/, '\1;' + codes.join(';')) :
+              sprintf("\e[0;%sm%s\e[0m", codes.join(';'), self)
+          else
+            match(/^(?:\e\[\d+m)+.*\e\[0m$/) ?
+              sub(/^((?:\e\[\d+m)+)/, '\1' + codes.map{|c| "\e[#{c}m" }.join) :
+              sprintf("\e[0m%s%s\e[0m", codes.map{|c| "\e[#{c}m" }.join, self)
+          end
         end
       end
     end

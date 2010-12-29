@@ -88,6 +88,20 @@ You can also add native SGR (Select Graphic Rendition) parameters (0..109) to an
 
 See http://en.wikipedia.org/wiki/ANSI_colors for a complete list
 
+=== Strict ANSI
+
+Some terminals don't parse composite SGR styles correctly, and need separate SGR for each.
+
+    puts "\e[7;31;46mSTRING\e[0m"         # strict_ansi == true (may be difficult to parse)
+    puts "\e[7m\e[31m\e[46mSTRING\e[0m"   # strict_ansi == false
+
+On the other way most of the terminals that parse them correctly can parse also separate SGRs,
+so Colorer will output non strict ansi by default. If you want to have strict ansi you can do:
+
+   Colorer.strict_ansi = true
+
+or you can set the COLORER_ANSI_STRICT environment variable for a system wide setting.
+
 == Copyright
 
 Copyright (c) 2010 Domizio Demichelis. See LICENSE for details.
