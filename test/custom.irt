@@ -1,18 +1,19 @@
 Colorer.def_custom_styles :dummy => nil,
                           :errorize => [ :red, :bold, :underline ],
                           :okeyze => [ :green, :bold ]
+Colorer.strict_ansi = true
 
 desc "errorize"
 'errorize'.errorize
 puts _
-test_value_eql? "\e[0;31;1;4merrorize\e[0m"
+_eql? "\e[0;31;1;4merrorize\e[0m"
 
 desc "okeyze"
 'okeyize'.okeyze
 puts _
-test_value_eql? "\e[0;32;1mokeyize\e[0m"
+_eql? "\e[0;32;1mokeyize\e[0m"
 
 desc "allows dummy styles"
 'dummy'.dummy
 puts _
-test_value_eql?( "dummy" )
+_eql?( "dummy" )

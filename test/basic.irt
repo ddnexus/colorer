@@ -3,19 +3,26 @@ Colorer.def_basic_styles true, true
 desc "red"
 'red'.red
 puts _
-test_value_eql? "\e[0;31mred\e[0m"
+_eql? "\e[0;31mred\e[0m"
 
 desc "red bold"
 'red bold'.red.bold
 puts _
-test_value_eql? "\e[0;31;1mred bold\e[0m"
+_eql? "\e[0;31;1mred bold\e[0m"
 
 desc "red bold underline"
 'red bold underline'.red.bold.underline
 puts _
-test_value_eql? "\e[0;31;1;4mred bold underline\e[0m"
+_eql? "\e[0;31;1;4mred bold underline\e[0m"
 
 desc "red bold underline reversed"
 'red bold underline reversed'.red.bold.underline.reversed
 puts _
-test_value_eql? "\e[0;31;1;4;7mred bold underline reversed\e[0m"
+_eql? "\e[0;31;1;4;7mred bold underline reversed\e[0m"
+
+desc "red bold with \\n"
+"red bold with\n".red.bold
+puts _
+_eql? "\e[0;31;1mred bold with\n\e[0m"
+
+

@@ -4,13 +4,13 @@ Colorer.def_custom_styles :mixed_sgr => [ :bold, 7 ]
 desc "Mixed SGR parameters"
 "Mixed SGR parameters".mixed_sgr
 puts _
-test_value_eql? "\e[0;1;7mMixed SGR parameters\e[0m"
+_eql? "\e[0;1;7mMixed SGR parameters\e[0m"
 
 desc "Basic and custom definition"
 Colorer.def_basic_styles true, true
 Colorer.def_custom_styles({:goo => [7], :guu => 4}, 1)
 "Basic and custom definition".green.goo.guu
 puts _
-test_value_eql? "\e[0;32;7;4mBasic and custom definition\e[0m"
+_eql? "\e[0;32;7;4mBasic and custom definition\e[0m"
 
 

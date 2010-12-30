@@ -1,3 +1,4 @@
+require 'rbconfig'
 module Colorer
 
   VERSION = File.read(File.expand_path('../../VERSION', __FILE__)).strip
@@ -49,6 +50,10 @@ module Colorer
   @strict_ansi = !!ENV['COLORER_STRICT_ANSI']
   attr_accessor :strict_ansi
 
+  def color?
+    color && STDOUT.tty? && ENV['TERM'] && ENV['TERM'] != 'dumb'
+  end
+
   def def_basic_styles(basic=true, force=false)
     define_styles basic_styles(basic), force
   end
@@ -66,6 +71,7 @@ module Colorer
       end
       puts "    #{caller[0]}"
     end
+    check_or_define_or
     styles.each_pair do |meth, style|
       # allows dummy methods (useful for style overriding)
       if style.nil?
@@ -81,16 +87,27 @@ module Colorer
       String.class_eval do
         raise AlreadyDefinedMethod.new(meth, self) if !force && method_defined?(meth)
         define_method(meth) do
-          return self unless (Colorer.color && STDOUT.tty? && ENV['TERM'] && ENV['TERM'] != 'dumb')
+          return self unless Colorer.color?
           if Colorer.strict_ansi
-            match(/^\e\[[\d;]+m.*\e\[0m$/) ?
+            match(/^\e\[[\d;]+m.*\e\[0m$/m) ?
               sub(/^(\e\[[\d;]+)/, '\1;' + codes.join(';')) :
               sprintf("\e[0;%sm%s\e[0m", codes.join(';'), self)
           else
-            match(/^(?:\e\[\d+m)+.*\e\[0m$/) ?
+            match(/^(?:\e\[\d+m)+.*\e\[0m$/m) ?
               sub(/^((?:\e\[\d+m)+)/, '\1' + codes.map{|c| "\e[#{c}m" }.join) :
               sprintf("\e[0m%s%s\e[0m", codes.map{|c| "\e[#{c}m" }.join, self)
           end
+        end
+      end
+    end
+  end
+
+  # strips all ansi SGR codes from self
+  def def_strip_ansi
+    unless 'string'.respond_to?(:strip_ansi)
+      String.class_eval do
+        define_method(:strip_ansi) do
+          gsub(/\e\[[\d;]+m/, '')
         end
       end
     end
@@ -110,5 +127,21 @@ module Colorer
     end
     styles
   end
+
+  def check_or_define_or
+    # defifines the String#or method if not already defined
+    # the String#or will return self when #color? is true
+    # or an alternative string otherwise
+    # e.g.: '    reversed    '.reversed.or('==== reversed ====')
+    unless 'string'.respond_to?(:or)
+      String.class_eval do
+        define_method(:or) do |alternative_string|
+          Colorer.color? ? self : alternative_string
+        end
+      end
+    end
+  end
+
+
 
 end
