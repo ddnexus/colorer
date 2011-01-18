@@ -1,4 +1,3 @@
-require 'rbconfig'
 module Colorer
 
   VERSION = File.read(File.expand_path('../../VERSION', __FILE__)).strip
@@ -44,15 +43,12 @@ module Colorer
 
   extend self
 
-  @color = RbConfig::CONFIG['host_os'] !~ /mswin|mingw/
+  @color = !!STDOUT.tty? && !!ENV['TERM'] && ENV['TERM'] != 'dumb'
   attr_accessor :color
+  alias_method :color?, :color
 
   @strict_ansi = !!ENV['COLORER_STRICT_ANSI']
   attr_accessor :strict_ansi
-
-  def color?
-    color && STDOUT.tty? && ENV['TERM'] && ENV['TERM'] != 'dumb'
-  end
 
   def def_basic_styles(basic=true, force=false)
     define_styles basic_styles(basic), force
@@ -141,7 +137,5 @@ module Colorer
       end
     end
   end
-
-
 
 end

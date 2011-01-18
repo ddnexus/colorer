@@ -49,7 +49,7 @@ end
 desc "Push the gem to rubygems.org"
 task :push, :force do |t, args|
   begin
-    ensure_clean(:install, args.force)
+    ensure_clean(:push, args.force)
     version = File.read('VERSION').strip
     gem_name = "#{name}-#{version}.gem"
     sh %(gem build #{name}.gemspec)

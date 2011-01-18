@@ -13,6 +13,18 @@ Easy ANSI code coloring for strings.
     "an error string".errorize
     "my native (Select Graphic Rendition) string".mysgr
 
+    '    reversed    '.reversed.or('==== reversed ====')
+
+    Colorer.def_strip_ansi
+    plain_text = colored_string.strip_ansi
+
+=== Feedback!!!
+
+This is feedback-driven software. Just send me a line about you and/or what you think about IRT:
+that will be a wonderful contribution that will help me to keep improving (and documenting) this software.
+
+My email address is ddnexus at gmail.com ... waiting for your. Ciao.
+
 == Features
 
 * Does not pollute String of unwanted methods
@@ -98,10 +110,21 @@ Some terminals don't parse composite SGR styles correctly, and need separate SGR
 On the other way most of the terminals that parse them correctly can parse also separate SGRs,
 so Colorer will output non strict ansi by default. If you want to have strict ansi you can do:
 
-   Colorer.strict_ansi = true
+    Colorer.strict_ansi = true
 
 or you can set the COLORER_ANSI_STRICT environment variable for a system wide setting.
 
+=== Color
+
+The color is true by defealut on a non-dumb tty terminal, anyway you can force it
+by explicitly setting it:
+
+    Colorer.color?         #=> true/false by default depending on your terminal
+    Colorer.color = true   # force true
+    Colorer.color?         #=> true
+    Colorer.color = false  # force false
+    Colorer.color?         #=> false
+
 == Copyright
 
-Copyright (c) 2010 Domizio Demichelis. See LICENSE for details.
+Copyright (c) 2010-2011 Domizio Demichelis. See LICENSE for details.
