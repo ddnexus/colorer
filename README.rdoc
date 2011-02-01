@@ -1,6 +1,6 @@
 = colorer
 
-Easy ANSI code coloring for strings.
+Easy ANSI code coloring for strings in applications.
 
 == Synopsis
 
@@ -20,7 +20,7 @@ Easy ANSI code coloring for strings.
 
 === Feedback!!!
 
-This is feedback-driven software. Just send me a line about you and/or what you think about IRT:
+This is feedback-driven software. Just send me a line about you and/or what you think about it:
 that will be a wonderful contribution that will help me to keep improving (and documenting) this software.
 
 My email address is ddnexus at gmail.com ... waiting for your. Ciao.
@@ -31,6 +31,14 @@ My email address is ddnexus at gmail.com ... waiting for your. Ciao.
 * Allows you to define basic styles with one line of code
 * Allows you to easily add your own custom styles
 * Allows extended (Select Graphic Rendition) parameters
+
+==+ Difference with the Dye gem
+
+The Colorer gem is meant for using in your own application, it's a cool way to style string, but it
+is not the perfect fit for libraries. Indeed it defines an instance method for each style, and that
+might clash if another library defines the same style. That's not a problem for applications.
+
+The Dye gem instead does not have the same problem, although its syntax is not so cool as the Colorer's one.
 
 === Basic Styles
 
@@ -112,7 +120,7 @@ so Colorer will output non strict ansi by default. If you want to have strict an
 
     Colorer.strict_ansi = true
 
-or you can set the COLORER_ANSI_STRICT environment variable for a system wide setting.
+or you can set the COLORER_STRICT_ANSI environment variable for a system wide setting.
 
 === Color
 

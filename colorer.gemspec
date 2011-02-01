@@ -7,10 +7,10 @@ Gem::Specification.new do |s|
   s.authors = ["Domizio Demichelis"]
   s.email = 'dd.nexus@gmail.com'
   s.homepage = 'http://github.com/ddnexus/colorer'
-  s.summary = 'Easy ANSI code coloring for strings'
+  s.summary = 'Easy ANSI code coloring for strings in applications'
   s.description = 'Colorer adds the basic ANSI styles to any string, allowing also to define your own stiles'
 
-  s.add_development_dependency('irt', [">= 1.0.0"])
+  s.add_development_dependency('irt', [">= 1.1.2"])
 
   s.files = `git ls-files -z`.split("\0")
 
